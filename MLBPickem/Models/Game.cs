@@ -30,7 +30,6 @@ namespace MLBPickem.Models
         public string HomeLine { get; set; }
 
         public string HomeStartingPitcher { get; set; }
-
         public int AwayScore { get; set; }
 
         public int HomeScore { get; set; }
@@ -44,5 +43,6 @@ namespace MLBPickem.Models
         public int WinningTeamId { get; set; }
 
         public int MLBScoreBoardId { get; set; }
+        public virtual ICollection<UserGame> UserGames { get; set; }
     }
 }
