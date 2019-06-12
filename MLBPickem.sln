@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.202
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLBPickem", "MLBPickem\MLBPickem.csproj", "{6A50D50B-8AA2-411C-8EB7-B3D205949403}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6A50D50B-8AA2-411C-8EB7-B3D205949403}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A50D50B-8AA2-411C-8EB7-B3D205949403}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A50D50B-8AA2-411C-8EB7-B3D205949403}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A50D50B-8AA2-411C-8EB7-B3D205949403}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7E02C655-CBEA-4DDF-B517-5137536EC5CE}
+	EndGlobalSection
+EndGlobal
