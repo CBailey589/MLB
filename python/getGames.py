@@ -11,12 +11,12 @@ teamDictionary = {}
 # Create connection to SQL DB
 conn = pyodbc.connect('Driver={SQL Server};'
                       'Server=DESKTOP-IL1934L\SQLEXPRESS;'
-                      'Database=MLB;'
+                      'Database=MLBPickem;'
                       'Trusted_Connection=yes;')
 cursor = conn.cursor()
 # Gets Teams table from DB and add teams to TeamDictionary
 cursor.execute('''SELECT *
-                FROM MLB.dbo.Teams''')
+                FROM MLBPickem.dbo.Team''')
 for team in cursor:
     teamDictionary[team[2]] = team[0]
 
@@ -86,7 +86,7 @@ for idx in range(len(teamList)):
 
         # Execute a SELECT from the Games table to see if the game already exists, if it does NOT, then insert the game into the table:
         cursor.execute('''SELECT *
-                        FROM MLB.dbo.Games g
+                        FROM MLBPickem.dbo.Games g
                         WHERE g.AwayTeamId = (?)
                         AND g.HomeTeamId = (?)
                         AND g.FirstPitchDateTime = (?)''', (awayTeamDBId, homeTeamDBId, gameDateObj))
@@ -96,8 +96,8 @@ for idx in range(len(teamList)):
             awaySP = gameStartingPitchers[idx - 1]
             homeLine = gameMoneyLine[shortListIndex][-4:]
             homeSP = gameStartingPitchers[idx]
-            cursor.execute('''INSERT INTO MLB.dbo.Games
-                            (FirstPitchDateTime, AwayTeamId, AwayLine, AwaySP, HomeTeamId, HomeLine, HomeSP, AwayScore, HomeScore, GameStarted, GameComplete, Inning)
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (gameDateObj, awayTeamDBId, awayLine, awaySP, homeTeamDBId, homeLine, homeSP, 0, 0, 0, 0, ""))
+            cursor.execute('''INSERT INTO MLBPickem.dbo.Games
+                            (FirstPitchDateTime, AwayTeamId, AwayLine, AwayStartingPitcher, HomeTeamId, HomeLine, HomeStartingPitcher, AwayScore, HomeScore, GameStarted, GameComplete, Inning, WinningTeamId, MLBScoreBoardId)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (gameDateObj, awayTeamDBId, awayLine, awaySP, homeTeamDBId, homeLine, homeSP, 0, 0, 0, 0, "", 0, 0))
             cursor.commit()
 conn.close()
