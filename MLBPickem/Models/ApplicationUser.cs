@@ -19,7 +19,6 @@ namespace MLBPickem.Models
         [Required]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
-
         public virtual ICollection<UserGame> UserGames { get; set; }
     }
 }
