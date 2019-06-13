@@ -28,9 +28,9 @@ yesterdayForDB = (f'{yesterday} 00:00:00.000')
 # Gets Games table from DB and replaces team Ids with MLB.com team names. Only get games from yesterday and today and put them into the gameDictionary. Only get games that have a GameComplete value of 0(not complete)
 cursor.execute('''SELECT GameId, FirstPitchDateTime, AwayTeam.MLBName, HomeTeam.MLBName, MLBScoreBoardId
                 FROM Games g
-                JOIN Team AS HomeTeam
+                JOIN Teams AS HomeTeam
                 ON g.HomeTeamId = HomeTeam.teamId
-                JOIN Team AS AwayTeam
+                JOIN Teams AS AwayTeam
                 ON g.AwayTeamId = AwayTeam.TeamId
                 WHERE g.FirstPitchDateTime > (?)
                 AND g.GameComplete = 0''',

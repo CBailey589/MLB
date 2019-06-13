@@ -16,7 +16,7 @@ conn = pyodbc.connect('Driver={SQL Server};'
 cursor = conn.cursor()
 # Gets Teams table from DB and add teams to TeamDictionary
 cursor.execute('''SELECT *
-                FROM MLBPickem.dbo.Team''')
+                FROM MLBPickem.dbo.Teams''')
 for team in cursor:
     teamDictionary[team[2]] = team[0]
 
