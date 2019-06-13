@@ -18,6 +18,8 @@ namespace MLBPickem.Models
         [Required]
         public int AwayTeamId { get; set; }
 
+        public Team AwayTeam { get; set; }
+
         [Required]
         public string AwayLine { get; set; }
 
@@ -26,11 +28,12 @@ namespace MLBPickem.Models
         [Required]
         public int HomeTeamId { get; set; }
 
+        public Team HomeTeam { get; set; }
+
         [Required]
         public string HomeLine { get; set; }
 
         public string HomeStartingPitcher { get; set; }
-
         public int AwayScore { get; set; }
 
         public int HomeScore { get; set; }
@@ -44,5 +47,6 @@ namespace MLBPickem.Models
         public int WinningTeamId { get; set; }
 
         public int MLBScoreBoardId { get; set; }
+        public virtual ICollection<UserGame> UserGames { get; set; }
     }
 }

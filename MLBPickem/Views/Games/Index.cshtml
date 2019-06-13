@@ -1,0 +1,53 @@
+﻿@model IEnumerable<MLBPickem.Models.Game>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Available Games for @DateTime.Today.Month/@DateTime.Today.Day:</h1>
+
+<table class="table">
+    <tbody>
+        @foreach (var game in Model)
+        {
+            <tr>
+                <table class="table table-striped table-dark table-sm table-responsive-md table-hover w-100">
+                    <tr>
+                        @game.FirstPitchDateTime.ToString("h:mm") ET
+                    </tr>
+                    <tr>
+                        <td style="width: 25%">
+                            @game.AwayTeam.MLBName
+                        </td>
+                        <td style="width: 25%">
+                            @game.AwayLine
+                        </td>
+                        <td style="width: 25%">
+                            @game.AwayStartingPitcher
+                        </td>
+                        <td style="width: 25%">
+                            <input type="checkbox" value="@game.MLBScoreBoardId-@game.AwayTeam.TeamId"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 25%">
+                            @game.HomeTeam.MLBName
+                        </td>
+                        <td style="width: 15%">
+                            @game.HomeLine
+                        </td>
+                        <td style="width: 45%">
+                            @game.HomeStartingPitcher
+                        </td>
+                        <td style="width: 15%">
+                            <input type="checkbox" value="@game.MLBScoreBoardId-@game.HomeTeam.TeamId" />
+                        </td>
+                    </tr>
+                </table>
+            </tr>
+            <hr />
+        }
+    </tbody>
+</table>
+
+
+
