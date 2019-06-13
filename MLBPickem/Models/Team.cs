@@ -19,5 +19,7 @@ namespace MLBPickem.Models
 
         [Required]
         public string MLBName { get; set; }
+
+        public string ImagePath { get; set; }
     }
 }
