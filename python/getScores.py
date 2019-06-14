@@ -8,7 +8,7 @@ from datetime import date, timedelta
 import pyodbc
 import pandas as pd
 
-# GameDictionary will hold the DB game Id as the key and a 3 element array of the date and MLB.com name for the home and away team.
+# Dictionary will hold the DB game Id as the key and a 3 element array of the date and MLB.com name for the home and away team.
 DBGames = {}
 
 # ScoreBoardGames will hold the games from the MLB scoreboard for comparisson to the DBGames
