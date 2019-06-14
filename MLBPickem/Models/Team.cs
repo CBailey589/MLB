@@ -21,5 +21,7 @@ namespace MLBPickem.Models
         public string MLBName { get; set; }
 
         public string ImagePath { get; set; }
+        public string PrimaryColor { get; set; }
+        public string SecondaryColor { get; set; }
     }
 }

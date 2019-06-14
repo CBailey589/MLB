@@ -20,7 +20,7 @@
                     <tr>
                         @obj.Game.FirstPitchDateTime.ToString("h:mm") ET @obj.Game.FirstPitchDateTime.ToString("M/dd")
                     </tr>
-                    <tr style="max-height:20px;">
+                    <tr style="max-height:20px; background-color:@obj.Game.AwayTeam.PrimaryColor;">
                         <td style="width: 20%;  position:relative;">
                             <img style="max-height:20px;" src="~/images/@obj.Game.AwayTeam.ImagePath" />
                         </td>
@@ -56,7 +56,7 @@
                             </form>
                         </td>
                     </tr>
-                    <tr>
+                    <tr style="max-height:20px; background-color:@obj.Game.HomeTeam.PrimaryColor;">
                         <td style="width: 20%;  position:relative;">
                             <div style="width:100%; display:flex; justify-content:center;">
                                 <div style="position:absolute; left:3px;">@("@")</div>
