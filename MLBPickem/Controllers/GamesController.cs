@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +27,7 @@ namespace MLBPickem.Controllers
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
 
-
+        [Authorize]
         //GET: Games/Index
         public async Task<IActionResult> Index()
         {
@@ -84,6 +85,50 @@ namespace MLBPickem.Controllers
             return View(AvailableGameModels);
         }
 
+        [Authorize]
+        //GET: Games/MyPicks
+        public async Task<IActionResult> MyPicks()
+        {
+            // Get Yesterday
+            var yesterday = DateTime.Today.AddDays(-1);
+
+            // Get Current User
+            var user = await GetCurrentUserAsync();
+
+            // Get games user picked yesterday and today
+            var UsersPickedGames = _context.UserGames
+                .Where(ug => ug.UserId == user.Id)
+                .Include(ug => ug.User)
+                .Include(ug => ug.Game).ThenInclude(g => g.AwayTeam)
+                .Include(ug => ug.Game).ThenInclude(g => g.HomeTeam)                
+                .Where(ug => ug.Game.FirstPitchDateTime > yesterday)
+                .OrderBy(ug => ug.Game.FirstPitchDateTime)
+                .ToList();
+
+            // Make list to hold Available Game models
+            List<AvailableGame> AvailableGameModels = new List<AvailableGame>();
+
+            // Convet list of usergames into list of AvailableGames to send to model
+            UsersPickedGames.ForEach(usergame =>
+            {
+                // Crate AvailableGame for each game
+                AvailableGame newAvailableGameModel = new AvailableGame()
+                {
+                    Game = usergame.Game,
+                    GameId = usergame.Game.GameId,
+                    UserGame = usergame,
+                    UserGameId = usergame.UserGameId,
+                    TeamId = usergame.ChosenTeamId,
+                    IsChecked = 1
+                };
+
+                AvailableGameModels.Add(newAvailableGameModel);
+            });
+
+            return View(AvailableGameModels);
+        }
+
+        [Authorize]
         public async Task<IActionResult> UpdateUserGames([FromForm] int IsChecked, int TeamId, int GameId, DateTime FirstPitch)
         {
             // Get Current Time in Eastern Time
