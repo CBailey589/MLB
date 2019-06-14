@@ -1,6 +1,11 @@
 ﻿
 @{
     ViewData["Title"] = "MyPicks";
+    // Get Current Time in Eastern Time
+    var timeUtc = DateTime.UtcNow;
+    TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+    DateTime easternTime = TimeZoneInfo.ConvertTimeFromUtc(timeUtc, easternZone);
+
 }
 
 <h1>MyPicks</h1>
@@ -9,89 +14,178 @@
     <tbody>
         @foreach (var obj in Model)
         {
-            <tr>
-                <table class="table table-striped table-dark table-sm table-responsive-sm table-hover w-100" style="min-width:380px; max-width:690px;">
-                    <tr>
-                        @obj.Game.FirstPitchDateTime.ToString("h:mm") ET @obj.Game.FirstPitchDateTime.ToString("M/dd")
-                    </tr>
-                    <tr style="max-height:20px; background-color:@obj.Game.AwayTeam.PrimaryColor;">
-                        <td style="width: 20%;  position:relative;">
-                            <img style="max-height:20px;" src="~/images/@obj.Game.AwayTeam.ImagePath" />
-                        </td>
-                        <td style="width: 20%">
-                            @obj.Game.AwayTeam.MLBName
-                        </td>
-                        <td style="width: 10%">
-                            @obj.Game.AwayLine
-                        </td>
-                        <td style="width: 45%">
-                            @obj.Game.AwayStartingPitcher
-                        </td>
-                        <td style="width: 5%">
-                            <form asp-action="UpdateUserGames">
-                                @if (obj.UserGame != null && obj.TeamId == obj.Game.AwayTeam.TeamId)
-                                {
-                                    <input onchange="this.form.submit()"
-                                           type="checkbox"
-                                           name="IsChecked"
-                                           value="1"
-                                           checked />
-                                }
-                                else
-                                {
-                                    <input onchange="this.form.submit()"
-                                           type="checkbox"
-                                           name="IsChecked"
-                                           value="1" />
-                                }
-                                <input type="hidden" name="TeamId" value="@obj.Game.AwayTeam.TeamId" />
-                                <input type="hidden" name="GameId" value="@obj.Game.GameId" />
-                                <input type="hidden" name="FirstPitch" value="@obj.Game.FirstPitchDateTime" />
-                            </form>
-                        </td>
-                    </tr>
-                    <tr style="max-height:20px; background-color:@obj.Game.HomeTeam.PrimaryColor;">
-                        <td style="width: 20%;  position:relative;">
-                            <div style="width:100%; display:flex; justify-content:center;">
-                                <div style="position:absolute; left:3px;">@("@")</div>
-                                <img style="max-height:20px;" src="~/images/@obj.Game.HomeTeam.ImagePath" />
-                            </div>
-                        </td>
-                        <td style="width: 20%">
-                            @obj.Game.HomeTeam.MLBName
-                        </td>
-                        <td style="width: 10%">
-                            @obj.Game.HomeLine
-                        </td>
-                        <td style="width: 45%">
-                            @obj.Game.HomeStartingPitcher
-                        </td>
-                        <td style="width: 5%">
-                            <form asp-action="UpdateUserGames">
-                                @if (obj.UserGame != null && obj.TeamId == obj.Game.HomeTeam.TeamId)
-                                {
-                                    <input onchange="this.form.submit()"
-                                           type="checkbox"
-                                           name="IsChecked"
-                                           value="1"
-                                           checked />
-                                }
-                                else
-                                {
-                                    <input onchange="this.form.submit()"
-                                           type="checkbox"
-                                           name="IsChecked"
-                                           value="1" />
-                                }
-                                <input type="hidden" name="TeamId" value="@obj.Game.HomeTeam.TeamId" />
-                                <input type="hidden" name="GameId" value="@obj.Game.GameId" />
-                                <input type="hidden" name="FirstPitch" value="@obj.Game.FirstPitchDateTime" />
-                            </form>
-                        </td>
-                    </tr>
-                </table>
-            </tr>
-            <hr />
+            @if (obj.Game.FirstPitchDateTime > easternTime)
+            {
+                <tr>
+                    <table class="table table-striped table-dark table-sm table-responsive-sm table-hover w-100" style="min-width:380px; max-width:690px;">
+                        <tr>
+                            @obj.Game.FirstPitchDateTime.ToString("h:mm") ET @obj.Game.FirstPitchDateTime.ToString("M/dd")
+                        </tr>
+                        <tr style="max-height:20px; background-color:@obj.Game.AwayTeam.PrimaryColor;">
+                            <td style="width: 20%;  position:relative;">
+                                <img style="max-height:20px;" src="~/images/@obj.Game.AwayTeam.ImagePath" />
+                            </td>
+                            <td style="width: 20%">
+                                @obj.Game.AwayTeam.MLBName
+                            </td>
+                            <td style="width: 10%">
+                                @obj.Game.AwayLine
+                            </td>
+                            <td style="width: 45%">
+                                @obj.Game.AwayStartingPitcher
+                            </td>
+                            <td style="width: 5%">
+                                <form asp-action="UpdateUserGames">
+                                    @if (obj.UserGame != null && obj.TeamId == obj.Game.AwayTeam.TeamId)
+                                    {
+                                        <input onchange="this.form.submit()"
+                                               type="checkbox"
+                                               name="IsChecked"
+                                               value="1"
+                                               checked />
+                                    }
+                                    else
+                                    {
+                                        <input onchange="this.form.submit()"
+                                               type="checkbox"
+                                               name="IsChecked"
+                                               value="1" />
+                                    }
+                                    <input type="hidden" name="TeamId" value="@obj.Game.AwayTeam.TeamId" />
+                                    <input type="hidden" name="GameId" value="@obj.Game.GameId" />
+                                    <input type="hidden" name="FirstPitch" value="@obj.Game.FirstPitchDateTime" />
+                                </form>
+                            </td>
+                        </tr>
+                        <tr style="max-height:20px; background-color:@obj.Game.HomeTeam.PrimaryColor;">
+                            <td style="width: 20%;  position:relative;">
+                                <div style="width:100%; display:flex; justify-content:center;">
+                                    <div style="position:absolute; left:3px;">@("@")</div>
+                                    <img style="max-height:20px;" src="~/images/@obj.Game.HomeTeam.ImagePath" />
+                                </div>
+                            </td>
+                            <td style="width: 20%">
+                                @obj.Game.HomeTeam.MLBName
+                            </td>
+                            <td style="width: 10%">
+                                @obj.Game.HomeLine
+                            </td>
+                            <td style="width: 45%">
+                                @obj.Game.HomeStartingPitcher
+                            </td>
+                            <td style="width: 5%">
+                                <form asp-action="UpdateUserGames">
+                                    @if (obj.UserGame != null && obj.TeamId == obj.Game.HomeTeam.TeamId)
+                                    {
+                                        <input onchange="this.form.submit()"
+                                               type="checkbox"
+                                               name="IsChecked"
+                                               value="1"
+                                               checked />
+                                    }
+                                    else
+                                    {
+                                        <input onchange="this.form.submit()"
+                                               type="checkbox"
+                                               name="IsChecked"
+                                               value="1" />
+                                    }
+                                    <input type="hidden" name="TeamId" value="@obj.Game.HomeTeam.TeamId" />
+                                    <input type="hidden" name="GameId" value="@obj.Game.GameId" />
+                                    <input type="hidden" name="FirstPitch" value="@obj.Game.FirstPitchDateTime" />
+                                </form>
+                            </td>
+                        </tr>
+                    </table>
+                </tr>
+                <hr />
+            }
+            else
+            {
+                <tr>
+                    <table class="table table-striped table-dark table-sm table-responsive-sm table-hover w-100" style="min-width:380px; max-width:690px;">
+                        <tr>
+                            @obj.Game.FirstPitchDateTime.ToString("h:mm") ET @obj.Game.FirstPitchDateTime.ToString("M/dd")
+                        </tr>
+                        <tr style="max-height:20px;">
+                            <td style="width: 20%;  position:relative;">
+                                <img style="max-height:20px;" src="~/images/@obj.Game.AwayTeam.ImagePath" />
+                            </td>
+                            <td style="width: 20%">
+                                @obj.Game.AwayTeam.MLBName
+                            </td>
+                            <td style="width: 10%">
+                                @obj.Game.AwayLine
+                            </td>
+                            <td style="width: 45%">
+                                @obj.Game.AwayStartingPitcher
+                            </td>
+                            <td style="width: 5%">
+                                <form asp-action="UpdateUserGames">
+                                    @if (obj.UserGame != null && obj.TeamId == obj.Game.AwayTeam.TeamId)
+                                    {
+                                        <input onchange="this.form.submit()"
+                                               type="checkbox"
+                                               name="IsChecked"
+                                               value="1"
+                                               checked />
+                                    }
+                                    else
+                                    {
+                                        <input onchange="this.form.submit()"
+                                               type="checkbox"
+                                               name="IsChecked"
+                                               value="1" />
+                                    }
+                                    <input type="hidden" name="TeamId" value="@obj.Game.AwayTeam.TeamId" />
+                                    <input type="hidden" name="GameId" value="@obj.Game.GameId" />
+                                    <input type="hidden" name="FirstPitch" value="@obj.Game.FirstPitchDateTime" />
+                                </form>
+                            </td>
+                        </tr>
+                        <tr style="max-height:20px;">
+                            <td style="width: 20%;  position:relative;">
+                                <div style="width:100%; display:flex; justify-content:center;">
+                                    <div style="position:absolute; left:3px;">@("@")</div>
+                                    <img style="max-height:20px;" src="~/images/@obj.Game.HomeTeam.ImagePath" />
+                                </div>
+                            </td>
+                            <td style="width: 20%">
+                                @obj.Game.HomeTeam.MLBName
+                            </td>
+                            <td style="width: 10%">
+                                @obj.Game.HomeLine
+                            </td>
+                            <td style="width: 45%">
+                                @obj.Game.HomeStartingPitcher
+                            </td>
+                            <td style="width: 5%">
+                                <form asp-action="UpdateUserGames">
+                                    @if (obj.UserGame != null && obj.TeamId == obj.Game.HomeTeam.TeamId)
+                                    {
+                                        <input onchange="this.form.submit()"
+                                               type="checkbox"
+                                               name="IsChecked"
+                                               value="1"
+                                               checked />
+                                    }
+                                    else
+                                    {
+                                        <input onchange="this.form.submit()"
+                                               type="checkbox"
+                                               name="IsChecked"
+                                               value="1" />
+                                    }
+                                    <input type="hidden" name="TeamId" value="@obj.Game.HomeTeam.TeamId" />
+                                    <input type="hidden" name="GameId" value="@obj.Game.GameId" />
+                                    <input type="hidden" name="FirstPitch" value="@obj.Game.FirstPitchDateTime" />
+                                </form>
+                            </td>
+                        </tr>
+                    </table>
+                </tr>
+                <hr />
+            }
         }
     </tbody>
 </table>
