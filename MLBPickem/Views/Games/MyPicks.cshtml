@@ -106,12 +106,16 @@
                     <table class="table table-sm table-responsive-sm table-hover w-100" style="min-width:380px; max-width:690px;">
                         <tr>
                             <td style="width: 20%;  position:relative;">
-                                <img style="max-height:20px;" src="~/images/picklock.svg" />
+                                <div style="display:flex; width:100%;">
+
+                                    <img style="max-height:20px;" src="~/images/picklock.svg" />
+                                    @obj.Game.FirstPitchDateTime.ToString("h:mm") ET @obj.Game.FirstPitchDateTime.ToString("M/dd")
+                                </div>
                             </td>
                             <td>
                                 @if (obj.Game.Inning.StartsWith("F"))
                                 {
-                                    <div style="color:red; font-weight:bolder;">
+                                    <div style="color:red; font-weight:bolder; width:20%;">
                                         @obj.Game.Inning
                                     </div>
                                 }
@@ -122,8 +126,11 @@
                                     </div>
                                 }
                             </td>
-                            <td style="font-weight:bolder;">
+                            <td style="font-weight:bolder; width:15%;">
                                 Score
+                            </td>
+                            <td style="font-weight:bolder; width:15%">
+                                Points
                             </td>
                         </tr>
                         <tr style="max-height:20px;">
@@ -136,6 +143,7 @@
                             <td style="width: 10%">
                                 @obj.Game.AwayScore
                             </td>
+                            <td></td>
                         </tr>
                         <tr style="max-height:20px;">
                             <td style="width: 20%;  position:relative;">
@@ -150,6 +158,7 @@
                             <td style="width: 10%">
                                 @obj.Game.HomeScore
                             </td>
+                            <td></td>
                         </tr>
                     </table>
                 </tr>
