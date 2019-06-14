@@ -102,7 +102,8 @@ namespace MLBPickem.Controllers
                 .Include(ug => ug.Game).ThenInclude(g => g.AwayTeam)
                 .Include(ug => ug.Game).ThenInclude(g => g.HomeTeam)                
                 .Where(ug => ug.Game.FirstPitchDateTime > yesterday)
-                .OrderBy(ug => ug.Game.FirstPitchDateTime)
+                .OrderByDescending(ug => ug.Game.FirstPitchDateTime.DayOfYear)
+                .ThenBy(ug => ug.Game.FirstPitchDateTime.TimeOfDay)
                 .ToList();
 
             // Make list to hold Available Game models
