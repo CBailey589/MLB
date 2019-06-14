@@ -113,12 +113,14 @@
                                 </div>
                             </td>
                             <td>
+                                @*IF GAME IS COMPLETE*@
                                 @if (obj.Game.GameComplete == true)
                                 {
                                     <div style="color:red; font-weight:bolder; width:20%;">
                                         @obj.Game.Inning
                                     </div>
                                 }
+                                @*IF GAME IS IN PROGRESS*@
                                 else
                                 {
                                     <div style="font-weight:bolder;">
@@ -133,6 +135,7 @@
                                 Points
                             </td>
                         </tr>
+                        @****************AWAY TEAM ROW FOR LOCKED GAMES!************@
                         @*Game is Final*@
                         @if (obj.Game.GameComplete == true)
                         {
@@ -205,23 +208,156 @@
                         }
                         @*Game is in progress*@
                         else
-                        { }
+                        {
+                            @*USER PICKED AWAY TEAM:*@
+                            if (obj.Game.AwayTeam.TeamId == obj.TeamId)
+                            {
+                                <tr style="max-height:20px; font-weight:bolder;">
+                                    <td style="width: 20%;  position:relative;">
+                                        <img style="max-height:20px;" src="~/images/@obj.Game.AwayTeam.ImagePath" />
+                                    </td>
+                                    <td style="width: 20%">
+                                        @obj.Game.AwayTeam.MLBName
+                                    </td>
+                                    <td style="width: 10%">
+                                        @obj.Game.AwayScore
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            }
+                            @*USER DID NOT PICK AWAY TEAM:*@
+                            else
+                            {
+                                {
+                                    <tr style="max-height:20px;">
+                                        <td style="width: 20%;  position:relative;">
+                                            <img style="max-height:20px;" src="~/images/@obj.Game.AwayTeam.ImagePath" />
+                                        </td>
+                                        <td style="width: 20%">
+                                            @obj.Game.AwayTeam.MLBName
+                                        </td>
+                                        <td style="width: 10%">
+                                            @obj.Game.AwayScore
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                }
+                            }
+                        }
 
-                        <tr style="max-height:20px;">
-                            <td style="width: 20%;  position:relative;">
-                                <div style="width:100%; display:flex; justify-content:center;">
-                                    <div style="position:absolute; left:3px;">@("@")</div>
-                                    <img style="max-height:20px;" src="~/images/@obj.Game.HomeTeam.ImagePath" />
-                                </div>
-                            </td>
-                            <td style="width: 20%">
-                                @obj.Game.HomeTeam.MLBName
-                            </td>
-                            <td style="width: 10%">
-                                @obj.Game.HomeScore
-                            </td>
-                            <td></td>
-                        </tr>
+                        @****************HOME TEAM ROW FOR LOCKED GAMES!************@
+                        @if (obj.Game.GameComplete == true)
+                        {
+                            @*USER PICKED WINNING HOME TEAM:*@
+                            @if (obj.Game.HomeTeam.TeamId == obj.TeamId && obj.Game.HomeTeam.TeamId == obj.Game.WinningTeamId)
+                            {
+                                <tr style="max-height:20px; background-color:forestgreen; font-weight:bolder; color:white;">
+                                    <td style="width: 20%;  position:relative;">
+                                        <div style="position:absolute; left:3px;">@("@")</div>
+                                        <img style="max-height:20px;" src="~/images/@obj.Game.HomeTeam.ImagePath" />
+                                    </td>
+                                    <td style="width: 20%">
+                                        @obj.Game.HomeTeam.MLBName
+                                    </td>
+                                    <td style="width: 10%">
+                                        @obj.Game.HomeScore
+                                    </td>
+                                    <td>
+                                        @if (obj.Game.HomeLine.StartsWith("+"))
+                                        {
+                                            <p>@obj.Game.HomeLine</p>
+                                        }
+                                        else
+                                        {
+                                            <p>+100</p>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                            @*USER PICKED LOSING AWAY TEAM:*@
+                            else if (obj.Game.HomeTeam.TeamId == obj.TeamId && obj.Game.HomeTeam.TeamId != obj.Game.WinningTeamId)
+                            {
+                                <tr style="max-height:20px; background-color:darkred; font-weight:bolder; color: white;">
+                                    <td style="width: 20%;  position:relative;">
+                                        <div style="position:absolute; left:3px;">@("@")</div>
+                                        <img style="max-height:20px;" src="~/images/@obj.Game.HomeTeam.ImagePath" />
+                                    </td>
+                                    <td style="width: 20%">
+                                        @obj.Game.HomeTeam.MLBName
+                                    </td>
+                                    <td style="width: 10%">
+                                        @obj.Game.HomeScore
+                                    </td>
+                                    <td>
+                                        @if (obj.Game.AwayLine.StartsWith("-"))
+                                        {
+                                            <p>@obj.Game.HomeLine</p>
+                                        }
+                                        else
+                                        {
+                                            <p>-100</p>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                            @*USER DID NOT PICK AWAY TEAM:*@
+                            else
+                            {
+                                <tr style="max-height:20px;">
+                                    <td style="width: 20%;  position:relative;">
+                                        <div style="position:absolute; left:3px;">@("@")</div>
+                                        <img style="max-height:20px;" src="~/images/@obj.Game.HomeTeam.ImagePath" />
+                                    </td>
+                                    <td style="width: 20%">
+                                        @obj.Game.HomeTeam.MLBName
+                                    </td>
+                                    <td style="width: 10%">
+                                        @obj.Game.HomeScore
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            }
+                        }
+                        @*Game is in progress*@
+                        else
+                        {
+                            @*USER PICKED AWAY TEAM:*@
+                            if (obj.Game.HomeTeam.TeamId == obj.TeamId)
+                            {
+                                <tr style="max-height:20px; font-weight:bolder;">
+                                    <td style="width: 20%;  position:relative;">
+                                        <div style="position:absolute; left:3px;">@("@")</div>
+                                        <img style="max-height:20px;" src="~/images/@obj.Game.HomeTeam.ImagePath" />
+                                    </td>
+                                    <td style="width: 20%">
+                                        @obj.Game.HomeTeam.MLBName
+                                    </td>
+                                    <td style="width: 10%">
+                                        @obj.Game.HomeScore
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            }
+                            @*USER DID NOT PICK AWAY TEAM:*@
+                            else
+                            {
+                                {
+                                    <tr style="max-height:20px;">
+                                        <td style="width: 20%;  position:relative;">
+                                            <div style="position:absolute; left:3px;">@("@")</div>
+                                            <img style="max-height:20px;" src="~/images/@obj.Game.HOmeTeam.ImagePath" />
+                                        </td>
+                                        <td style="width: 20%">
+                                            @obj.Game.HomeTeam.MLBName
+                                        </td>
+                                        <td style="width: 10%">
+                                            @obj.Game.HomeScore
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                }
+                            }
+                        }
                     </table>
                 </tr>
                 <hr />
