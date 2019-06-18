@@ -100,7 +100,7 @@ namespace MLBPickem.Controllers
                 .Where(ug => ug.UserId == user.Id)
                 .Include(ug => ug.User)
                 .Include(ug => ug.Game).ThenInclude(g => g.AwayTeam)
-                .Include(ug => ug.Game).ThenInclude(g => g.HomeTeam)                
+                .Include(ug => ug.Game).ThenInclude(g => g.HomeTeam)
                 .Where(ug => ug.Game.FirstPitchDateTime > yesterday)
                 .OrderByDescending(ug => ug.Game.FirstPitchDateTime.DayOfYear)
                 .ThenBy(ug => ug.Game.FirstPitchDateTime.TimeOfDay)
@@ -155,7 +155,7 @@ namespace MLBPickem.Controllers
                         ;
 
                     //If oldUserGame exists, remove from DB
-                    if(oldUserGame != null)
+                    if (oldUserGame != null)
                     {
                         _context.Remove(oldUserGame);
                     }
@@ -178,7 +178,7 @@ namespace MLBPickem.Controllers
                 {
                     UserGame oldUserGame = (UserGame)_context.UserGames
                         .Where(ug => ug.GameId == GameId)
-                        .Where(uh => uh.UserId == user.Id)
+                        .Where(ug => ug.UserId == user.Id)
                         .FirstOrDefault()
                         ;
 
@@ -193,6 +193,111 @@ namespace MLBPickem.Controllers
             {
                 return RedirectToAction("Index", "Games");
             }
+        }
+
+        public async Task<IActionResult> Standings()
+        {
+            // Get all user games for complete games, grouped by user
+            var completedGamesByUser = _context.UserGames
+                .Include(ug => ug.Game)
+                .ThenInclude(g => g.AwayTeam)
+                .Include(ug => ug.Game)
+                .ThenInclude(g => g.HomeTeam)
+                .Where(ug => ug.Game.GameComplete == true)
+                .GroupBy(ug => ug.User)
+                .ToList();
+                ;
+
+            //Make a list of UserScore objects to send to the view
+            List<UserScore> UserScores = new List<UserScore>();
+
+            //Calculate total score for User
+            foreach (var userGroup in completedGamesByUser)
+            {
+                // set total score initially to 0
+                var userScore = 0;
+                foreach (var userGame in userGroup)
+                {
+                    // IF USER CHOSE WINNING TEAM
+                    if (userGame.ChosenTeamId == userGame.Game.WinningTeamId)
+                    {
+                        // IF USER CHOSE AWAY TEAM
+                        if (userGame.ChosenTeamId == userGame.Game.AwayTeam.TeamId)
+                        {
+                            //IF USER CHOSE UNDERDOG
+                            if(userGame.Game.AwayLine.StartsWith("+"))
+                            {
+                                userScore = userScore + Int32.Parse(userGame.Game.AwayLine);
+                            }
+                            //IF USER CHOSE FAVORITE
+                            else
+                            {
+                                userScore = userScore + 100;
+                            }
+                        }
+                        // IF USER CHOSE HOME TEAM
+                        else
+                        {
+                            //IF USER CHOSE UNDERDOG
+                            if (userGame.Game.HomeLine.StartsWith("+"))
+                            {
+                                userScore = userScore + Int32.Parse(userGame.Game.HomeLine);
+                            }
+                            //IF USER CHOSE FAVORITE
+                            else
+                            {
+                                userScore = userScore + 100;
+                            }
+
+                        }
+                    }
+                    // IF USER CHOSE LOSING TEAM
+                    else
+                    {
+                        // IF USER CHOSE AWAY TEAM
+                        if (userGame.ChosenTeamId == userGame.Game.AwayTeam.TeamId)
+                        {
+                            //IF USER CHOSE UNDERDOG
+                            if (userGame.Game.AwayLine.StartsWith("+"))
+                            {
+                                userScore = userScore - 100;
+                            }
+                            //IF USER CHOSE FAVORITE
+                            else
+                            {
+                                userScore = userScore - Int32.Parse(userGame.Game.AwayLine);
+                            }
+                        }
+                        // IF USER CHOSE HOME TEAM
+                        else
+                        {
+                            //IF USER CHOSE UNDERDOG
+                            if (userGame.Game.HomeLine.StartsWith("+"))
+                            {
+                                userScore = userScore - 100;
+                            }
+                            //IF USER CHOSE FAVORITE
+                            else
+                            {
+                                userScore = userScore - Int32.Parse(userGame.Game.HomeLine);
+                            }
+
+                        }
+                    }
+                }
+
+                UserScore userScoreObj = new UserScore
+                {
+                    User = userGroup.Key,
+                    TotalScore = userScore
+                };
+
+                UserScores.Add(userScoreObj);
+            }
+
+            UserScores.OrderBy(us => us.TotalScore);
+
+            return View(UserScores);
         }
     }
 }
