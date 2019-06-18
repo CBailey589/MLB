@@ -30,7 +30,7 @@
                     <partial name="_LoginPartial" />
                     @if (User.Identity.IsAuthenticated)
                     {
-                <div class="nav-link text-primary flex-grow-1" style="font-weight:bolder;">@User.Identity.Name - pts</div>
+                <div class="nav-link text-primary flex-grow-1" style="font-weight:bolder; display:flex; flex-direction:row">@User.Identity.Name -&nbsp;@await Component.InvokeAsync("UserScore")pts</div>
                     }
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
