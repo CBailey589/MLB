@@ -1,0 +1,24 @@
+﻿@model IEnumerable<MLBPickem.Models.ViewModels.UserScore>
+@{
+    ViewData["Title"] = "Standings";
+}
+
+<h1>Standings</h1>
+
+<table class="table">
+    @foreach(var userScore in Model.Select((value, i) => new { i, value }))
+    {
+        <tr>
+            <td>
+                @(userScore.i + 1)
+            </td>
+            <td>
+                @userScore.value.User.UserName
+            </td>
+            <td>
+                @userScore.value.TotalScore
+            </td>
+        </tr>
+    }
+</table>
+

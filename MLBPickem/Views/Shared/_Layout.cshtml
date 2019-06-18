@@ -32,14 +32,17 @@
                     {
                 <div class="nav-link text-primary flex-grow-1" style="font-weight:bolder;">@User.Identity.Name - pts</div>
                     }
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Games" asp-action="Index">Available Games</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Games" asp-action="MyPicks">My Picks</a>
-                        </li>
-                    </ul>
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Games" asp-action="Index">Available Games</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Games" asp-action="MyPicks">My Picks</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Games" asp-action="Standings">Standings</a>
+                    </li>
+                </ul>
                 </div>
             </div>
         </nav>
