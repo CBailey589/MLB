@@ -174,7 +174,9 @@ namespace MLBPickem.Controllers
                     await _context.SaveChangesAsync();
 
                     // ***** Since this method can be accessed from Games/Index AND Games/MyPicks,
-                    // this returns the user to whichever view sent them to this method******
+                    // this returns the user to whichever view sent them to this method.
+                    // The scroll position is sent back to the view as TempData to be used to set the view to where the user
+                    // was when the UpdateUserGames method was tripped******
                     double SP = double.Parse(scrollPos);
                     TempData["ScrollPos"] = SP;
                     string referer = Request.Headers["Referer"].ToString();

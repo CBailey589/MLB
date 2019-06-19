@@ -1,6 +1,10 @@
 ﻿@model IEnumerable<MLBPickem.Models.ViewModels.AvailableGame>
 @{
     ViewData["Title"] = "Index";
+    @*The Following code sets the view Y offset to the spot where it was before the information was sent to the controller
+        The first time the user visits the view the scroll is 0, after the user clicks a checkbox that fires the UpdateUserGames
+        method, they will send the scroll value along to the method and get it back as temp data. The javascript at the bottom
+        will set the scroll offset on page load*@
     double setScroll = 0;
     @if (TempData["ScrollPos"] != null)
     {
@@ -103,10 +107,9 @@
     </tbody>
 </table>
 
-
+@*As the user scrolls this updates the scroll position to send to the controller*@
 <script>
     window.onload = function () {
-        console.log("ViewBag")
         window.scrollTo(0, @setScroll)
         window.onscroll = function () {
             var inputs = document.querySelectorAll('#scrollPos')

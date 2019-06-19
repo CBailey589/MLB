@@ -7,6 +7,12 @@
     TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
     DateTime easternTime = TimeZoneInfo.ConvertTimeFromUtc(timeUtc, easternZone);
 
+    double setScroll = 0;
+    @if (TempData["ScrollPos"] != null)
+    {
+        setScroll = (double)TempData["ScrollPos"];
+    }
+
 }
 
 <h1>My Picks</h1>
@@ -55,6 +61,7 @@
                                     <input type="hidden" name="TeamId" value="@obj.Game.AwayTeam.TeamId" />
                                     <input type="hidden" name="GameId" value="@obj.Game.GameId" />
                                     <input type="hidden" name="FirstPitch" value="@obj.Game.FirstPitchDateTime" />
+                                    <input type="hidden" id="scrollPos" name="scrollPos" value="">
                                 </form>
                             </td>
                         </tr>
@@ -94,6 +101,7 @@
                                     <input type="hidden" name="TeamId" value="@obj.Game.HomeTeam.TeamId" />
                                     <input type="hidden" name="GameId" value="@obj.Game.GameId" />
                                     <input type="hidden" name="FirstPitch" value="@obj.Game.FirstPitchDateTime" />
+                                    <input type="hidden" id="scrollPos" name="scrollPos" value="">
                                 </form>
                             </td>
                         </tr>
@@ -367,3 +375,14 @@
     </tbody>
 </table>
 
+<script>
+    window.onload = function () {
+        window.scrollTo(0, @setScroll)
+        window.onscroll = function () {
+            var inputs = document.querySelectorAll('#scrollPos')
+            inputs.forEach(i => {
+                i.value = window.scrollY
+            })
+        }
+    }
+</script>
