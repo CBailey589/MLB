@@ -132,8 +132,9 @@ namespace MLBPickem.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> UpdateUserGames([FromForm] int IsChecked, int TeamId, int GameId, DateTime FirstPitch)
+        public async Task<IActionResult> UpdateUserGames([FromForm] int IsChecked, int TeamId, int GameId, DateTime FirstPitch, string scrollPos)
         {
+
             // Get Current Time in Eastern Time
             var timeUtc = DateTime.UtcNow;
             TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
@@ -173,7 +174,11 @@ namespace MLBPickem.Controllers
                     await _context.SaveChangesAsync();
 
                     // ***** Since this method can be accessed from Games/Index AND Games/MyPicks,
-                    // this returns the user to whichever view sent them to this method******
+                    // this returns the user to whichever view sent them to this method.
+                    // The scroll position is sent back to the view as TempData to be used to set the view to where the user
+                    // was when the UpdateUserGames method was tripped******
+                    double SP = double.Parse(scrollPos);
+                    TempData["ScrollPos"] = SP;
                     string referer = Request.Headers["Referer"].ToString();
                     return Redirect(referer);
                 }
@@ -190,6 +195,8 @@ namespace MLBPickem.Controllers
                     await _context.SaveChangesAsync();
 
                     //explained in previous return
+                    double SP = double.Parse(scrollPos);
+                    TempData["ScrollPos"] = SP;
                     string referer = Request.Headers["Referer"].ToString();
                     return Redirect(referer);
                 }
@@ -198,6 +205,8 @@ namespace MLBPickem.Controllers
             else
             {
                 // explained in previous return
+                double SP = double.Parse(scrollPos);
+                TempData["ScrollPos"] = SP;
                 string referer = Request.Headers["Referer"].ToString();
                 return Redirect(referer);
             }

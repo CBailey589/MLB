@@ -1,10 +1,17 @@
-﻿@model List<MLBPickem.Models.ViewModels.AvailableGame>
+﻿
+@model List<MLBPickem.Models.ViewModels.AvailableGame>
 @{
     ViewData["Title"] = "MyPicks";
     // Get Current Time in Eastern Time
     var timeUtc = DateTime.UtcNow;
     TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
     DateTime easternTime = TimeZoneInfo.ConvertTimeFromUtc(timeUtc, easternZone);
+
+    double setScroll = 0;
+    @if (TempData["ScrollPos"] != null)
+    {
+        setScroll = (double)TempData["ScrollPos"];
+    }
 
 }
 
@@ -54,6 +61,7 @@
                                     <input type="hidden" name="TeamId" value="@obj.Game.AwayTeam.TeamId" />
                                     <input type="hidden" name="GameId" value="@obj.Game.GameId" />
                                     <input type="hidden" name="FirstPitch" value="@obj.Game.FirstPitchDateTime" />
+                                    <input type="hidden" id="scrollPos" name="scrollPos" value="">
                                 </form>
                             </td>
                         </tr>
@@ -93,6 +101,7 @@
                                     <input type="hidden" name="TeamId" value="@obj.Game.HomeTeam.TeamId" />
                                     <input type="hidden" name="GameId" value="@obj.Game.GameId" />
                                     <input type="hidden" name="FirstPitch" value="@obj.Game.FirstPitchDateTime" />
+                                    <input type="hidden" id="scrollPos" name="scrollPos" value="">
                                 </form>
                             </td>
                         </tr>
@@ -274,7 +283,7 @@
                                     </td>
                                 </tr>
                             }
-                            @*USER PICKED LOSING AWAY TEAM:*@
+                            @*USER PICKED LOSING HOME TEAM:*@
                             else if (obj.Game.HomeTeam.TeamId == obj.TeamId && obj.Game.HomeTeam.TeamId != obj.Game.WinningTeamId)
                             {
                                 <tr style="max-height:20px; background-color:darkred; font-weight:bolder; color: white;">
@@ -289,7 +298,7 @@
                                         @obj.Game.HomeScore
                                     </td>
                                     <td>
-                                        @if (obj.Game.AwayLine.StartsWith("-"))
+                                        @if (obj.Game.HomeLine.StartsWith("-"))
                                         {
                                             <p>@obj.Game.HomeLine</p>
                                         }
@@ -300,7 +309,7 @@
                                     </td>
                                 </tr>
                             }
-                            @*USER DID NOT PICK AWAY TEAM:*@
+                            @*USER DID NOT PICK HOME TEAM:*@
                             else
                             {
                                 <tr style="max-height:20px;">
@@ -366,3 +375,14 @@
     </tbody>
 </table>
 
+<script>
+    window.onload = function () {
+        window.scrollTo(0, @setScroll)
+        window.onscroll = function () {
+            var inputs = document.querySelectorAll('#scrollPos')
+            inputs.forEach(i => {
+                i.value = window.scrollY
+            })
+        }
+    }
+</script>
