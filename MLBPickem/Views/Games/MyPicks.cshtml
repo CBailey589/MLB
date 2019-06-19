@@ -1,4 +1,5 @@
-﻿@model List<MLBPickem.Models.ViewModels.AvailableGame>
+﻿
+@model List<MLBPickem.Models.ViewModels.AvailableGame>
 @{
     ViewData["Title"] = "MyPicks";
     // Get Current Time in Eastern Time
@@ -274,7 +275,7 @@
                                     </td>
                                 </tr>
                             }
-                            @*USER PICKED LOSING AWAY TEAM:*@
+                            @*USER PICKED LOSING HOME TEAM:*@
                             else if (obj.Game.HomeTeam.TeamId == obj.TeamId && obj.Game.HomeTeam.TeamId != obj.Game.WinningTeamId)
                             {
                                 <tr style="max-height:20px; background-color:darkred; font-weight:bolder; color: white;">
@@ -289,7 +290,7 @@
                                         @obj.Game.HomeScore
                                     </td>
                                     <td>
-                                        @if (obj.Game.AwayLine.StartsWith("-"))
+                                        @if (obj.Game.HomeLine.StartsWith("-"))
                                         {
                                             <p>@obj.Game.HomeLine</p>
                                         }
@@ -300,7 +301,7 @@
                                     </td>
                                 </tr>
                             }
-                            @*USER DID NOT PICK AWAY TEAM:*@
+                            @*USER DID NOT PICK HOME TEAM:*@
                             else
                             {
                                 <tr style="max-height:20px;">
