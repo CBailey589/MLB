@@ -44,6 +44,7 @@ namespace MLBPickem.Controllers
                 .Include(g => g.AwayTeam)
                 .Include(g => g.HomeTeam)
                 .Include(g => g.UserGames)
+                .ThenInclude(ug => ug.User)
                 .Where(g => g.FirstPitchDateTime > easternTime)
                 .OrderBy(g => g.FirstPitchDateTime)
                 .ThenBy(g => g.HomeTeam.TeamId)
