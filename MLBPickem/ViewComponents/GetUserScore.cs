@@ -99,7 +99,7 @@ namespace MLBPickem.ViewComponents
                         //IF USER CHOSE FAVORITE
                         else
                         {
-                            userScore = userScore - Int32.Parse(userGame.Game.AwayLine);
+                            userScore = userScore - Int32.Parse(userGame.Game.AwayLine) * (-1);
                         }
                     }
                     // IF USER CHOSE HOME TEAM
@@ -113,7 +113,7 @@ namespace MLBPickem.ViewComponents
                         //IF USER CHOSE FAVORITE
                         else
                         {
-                            userScore = userScore - Int32.Parse(userGame.Game.HomeLine);
+                            userScore = userScore - Int32.Parse(userGame.Game.HomeLine)*(-1);
                         }
 
                     }

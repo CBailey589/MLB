@@ -46,6 +46,7 @@ namespace MLBPickem.Controllers
                 .Include(g => g.UserGames)
                 .Where(g => g.FirstPitchDateTime > easternTime)
                 .OrderBy(g => g.FirstPitchDateTime)
+                .ThenBy(g => g.HomeTeam.TeamId)
                 .ToList()
                 ;
 
@@ -104,6 +105,7 @@ namespace MLBPickem.Controllers
                 .Where(ug => ug.Game.FirstPitchDateTime > yesterday)
                 .OrderByDescending(ug => ug.Game.FirstPitchDateTime.DayOfYear)
                 .ThenBy(ug => ug.Game.FirstPitchDateTime.TimeOfDay)
+                .ThenBy(ug => ug.Game.HomeTeam.TeamId)
                 .ToList();
 
             // Make list to hold Available Game models
@@ -170,8 +172,10 @@ namespace MLBPickem.Controllers
                     _context.UserGames.Add(newUserGame);
                     await _context.SaveChangesAsync();
 
-                    // Redirect back to Games/Index
-                    return RedirectToAction("Index", "Games");
+                    // ***** Since this method can be accessed from Games/Index AND Games/MyPicks,
+                    // this returns the user to whichever view sent them to this method******
+                    string referer = Request.Headers["Referer"].ToString();
+                    return Redirect(referer);
                 }
                 // This scenario means a user is unchecking a previously chosen team
                 else
@@ -185,13 +189,17 @@ namespace MLBPickem.Controllers
                     _context.Remove(oldUserGame);
                     await _context.SaveChangesAsync();
 
-                    return RedirectToAction("Index", "Games");
+                    //explained in previous return
+                    string referer = Request.Headers["Referer"].ToString();
+                    return Redirect(referer);
                 }
             }
             // User is attempting to make a choice after the game has started
             else
             {
-                return RedirectToAction("Index", "Games");
+                // explained in previous return
+                string referer = Request.Headers["Referer"].ToString();
+                return Redirect(referer);
             }
         }
 
@@ -225,7 +233,7 @@ namespace MLBPickem.Controllers
                         if (userGame.ChosenTeamId == userGame.Game.AwayTeam.TeamId)
                         {
                             //IF USER CHOSE UNDERDOG
-                            if(userGame.Game.AwayLine.StartsWith("+"))
+                            if (userGame.Game.AwayLine.StartsWith("+"))
                             {
                                 userScore = userScore + Int32.Parse(userGame.Game.AwayLine);
                             }
@@ -265,7 +273,7 @@ namespace MLBPickem.Controllers
                             //IF USER CHOSE FAVORITE
                             else
                             {
-                                userScore = userScore - Int32.Parse(userGame.Game.AwayLine);
+                                userScore = userScore - Int32.Parse(userGame.Game.AwayLine) * (-1);
                             }
                         }
                         // IF USER CHOSE HOME TEAM
@@ -279,7 +287,7 @@ namespace MLBPickem.Controllers
                             //IF USER CHOSE FAVORITE
                             else
                             {
-                                userScore = userScore - Int32.Parse(userGame.Game.HomeLine);
+                                userScore = userScore - Int32.Parse(userGame.Game.HomeLine) * (-1);
                             }
 
                         }
