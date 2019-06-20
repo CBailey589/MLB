@@ -135,7 +135,11 @@ namespace MLBPickem.Controllers
         [Authorize]
         public async Task<IActionResult> UpdateUserGames([FromForm] int IsChecked, int TeamId, int GameId, DateTime FirstPitch, string scrollPos)
         {
-
+            // Set scrollpos to 0 from null if the user did not scroll
+            if (scrollPos == null)
+            {
+                scrollPos = "0";
+            }
             // Get Current Time in Eastern Time
             var timeUtc = DateTime.UtcNow;
             TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
@@ -217,6 +221,7 @@ namespace MLBPickem.Controllers
         {
             // Get all user games for complete games, grouped by user
             var completedGamesByUser = _context.UserGames
+                .Include(ug => ug.User)
                 .Include(ug => ug.Game)
                 .ThenInclude(g => g.AwayTeam)
                 .Include(ug => ug.Game)
