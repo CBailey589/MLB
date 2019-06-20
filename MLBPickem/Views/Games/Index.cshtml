@@ -8,7 +8,7 @@
     double setScroll = 0;
     @if (TempData["ScrollPos"] != null)
     {
-        setScroll = (double) TempData["ScrollPos"];
+        setScroll = (double)TempData["ScrollPos"];
     }
 }
 
@@ -40,18 +40,27 @@
                             <form asp-action="UpdateUserGames">
                                 @if (obj.UserGame != null && obj.TeamId == obj.Game.AwayTeam.TeamId)
                                 {
-                                    <input onchange="this.form.submit()"
-                                           type="checkbox"
-                                           name="IsChecked"
-                                           value="1"
-                                           checked />
+                                    <label>
+                                        <input class="check-custom"
+                                               onchange="this.form.submit()"
+                                               type="checkbox"
+                                               name="IsChecked"
+                                               value="1"
+                                               checked />
+                                        <span style="background-color:@obj.Game.AwayTeam.SecondaryColor; border-color: @obj.Game.AwayTeam.SecondaryColor;"
+                                              class="check-toggle"></span>
+                                    </label>
                                 }
                                 else
                                 {
-                                    <input onchange="this.form.submit()"
-                                           type="checkbox"
-                                           name="IsChecked"
-                                           value="1" />
+                                    <label>
+                                        <input class="check-custom"
+                                               onchange="this.form.submit()"
+                                               type="checkbox"
+                                               name="IsChecked"
+                                               value="1" />
+                                        <span class="check-toggle"></span>
+                                    </label>
                                 }
                                 <input type="hidden" name="TeamId" value="@obj.Game.AwayTeam.TeamId" />
                                 <input type="hidden" name="GameId" value="@obj.Game.GameId" />
@@ -80,18 +89,27 @@
                             <form asp-action="UpdateUserGames">
                                 @if (obj.UserGame != null && obj.TeamId == obj.Game.HomeTeam.TeamId)
                                 {
-                                    <input onchange="this.form.submit()"
-                                           type="checkbox"
-                                           name="IsChecked"
-                                           value="1"
-                                           checked />
+                                    <label>
+                                        <input class="check-custom"
+                                               onchange="this.form.submit()"
+                                               type="checkbox"
+                                               name="IsChecked"
+                                               value="1"
+                                               checked />
+                                        <span style="background-color:@obj.Game.HomeTeam.SecondaryColor; border-color: @obj.Game.HomeTeam.SecondaryColor;"
+                                              class="check-toggle"></span>
+                                    </label>
                                 }
                                 else
                                 {
-                                    <input onchange="this.form.submit()"
-                                           type="checkbox"
-                                           name="IsChecked"
-                                           value="1" />
+                                    <label>
+                                        <input class="check-custom"
+                                               onchange="this.form.submit()"
+                                               type="checkbox"
+                                               name="IsChecked"
+                                               value="1" />
+                                        <span class="check-toggle"></span>
+                                    </label>
                                 }
                                 <input type="hidden" name="TeamId" value="@obj.Game.HomeTeam.TeamId" />
                                 <input type="hidden" name="GameId" value="@obj.Game.GameId" />
